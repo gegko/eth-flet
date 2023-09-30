@@ -174,17 +174,10 @@ def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.padding = 0
-    
-    # page.bgcolor = ft.colors.BLUE_100
-
-    background_img = ft.Container(
-        ft.Image('assets/img/hero.webp', scale=1.35),
-        alignment=ft.alignment.center,
-        image_fit=ft.ImageFit.FILL
-    )
-
+    background_img = ft.Image('assets/img/hero.webp', scale=1.35)
     validator = ETHValidator()
-    st = ft.Stack([background_img, validator])
-    page.add(st)
+    stack = ft.Stack([background_img, validator])
+    
+    page.add(stack)
 
 ft.app(main)
