@@ -164,16 +164,27 @@ class ETHValidator(ft.UserControl):
             self.validation_status_failed()
     
     def build(self):
-        return ft.Card(content=self.validation_box, elevation=15)
+        return ft.Container(
+            ft.Card(content=self.validation_box, elevation=15),
+            alignment=ft.alignment.center,
+        )
 
 
 def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.bgcolor = ft.colors.BLUE_100
+    page.padding = 0
+    
+    # page.bgcolor = ft.colors.BLUE_100
+
+    background_img = ft.Container(
+        ft.Image('assets/img/hero.webp', scale=1.35),
+        alignment=ft.alignment.center,
+        image_fit=ft.ImageFit.FILL
+    )
 
     validator = ETHValidator()
-
-    page.add(validator)
+    st = ft.Stack([background_img, validator])
+    page.add(st)
 
 ft.app(main)
