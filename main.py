@@ -160,6 +160,15 @@ class ETHValidator(ft.UserControl):
 
         if eth_utils.address.is_address(eth_address):
             self.validation_status_success()
+            balance = web3.eth.get_balance(eth_address)
+            balance = web3.from_wei(balance, 'ether')
+            text = (
+                f"{eth_address} is a valid ETH address."
+                "\n\nCurrent balance: {balance:.2f} ETH"
+            )
+            self.page.snack_bar = ft.SnackBar(ft.Text(text))
+            self.page.snack_bar.open = True
+            self.page.update()
         else:
             self.validation_status_failed()
     
