@@ -4,6 +4,7 @@ import eth_utils
 import flet as ft
 from dotenv import load_dotenv
 from web3 import Web3, HTTPProvider
+from transactions import get_last_5
 
 
 load_dotenv()
@@ -13,6 +14,15 @@ web3 = Web3(HTTPProvider(alchemy_url))
 
 
 class ETHValidator(ft.UserControl):
+    loader = ft.Container(
+        bgcolor=ft.colors.WHITE38,
+        content=ft.ProgressRing(
+            width=50,
+            height=50,
+            stroke_width=5,
+        ), 
+        alignment=ft.alignment.center
+    )
     def __init__(self):
         self.title = ft.Text(
             "Validate your ETH wallet.",
@@ -159,14 +169,47 @@ class ETHValidator(ft.UserControl):
         self.clear_validation_status()
 
         if eth_utils.address.is_address(eth_address):
-            self.validation_status_success()
+            self.page.overlay.append(self.loader)
+            self.page.update()
             balance = web3.eth.get_balance(eth_address)
             balance = web3.from_wei(balance, 'ether')
             text = (
                 f"{eth_address} is a valid ETH address."
-                "\n\nCurrent balance: {balance:.2f} ETH"
+                f"\nCurrent balance: {balance:.3f} ETH"
             )
-            self.page.snack_bar = ft.SnackBar(ft.Text(text))
+            snack_content = ft.Column(
+                controls=[
+                    ft.Text(
+                        value=text,
+                        color=ft.colors.BLACK54,
+                        text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    ft.Text(
+                        value='Last 10 transactions:',
+                        size=16,
+                        color=ft.colors.BLACK87,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    ft.Text(
+                        value=get_last_5(eth_address),
+                        color=ft.colors.BLACK87,
+                        weight=ft.FontWeight.W_500,
+                    ),
+                ],
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            )
+            big_snack = ft.SnackBar(
+                bgcolor=ft.colors.WHITE,
+                elevation=25,
+                content=snack_content,
+                duration=120000,
+                show_close_icon=True,
+                close_icon_color=ft.colors.BLACK38,
+            )
+            self.page.snack_bar = big_snack
+            self.page.overlay.pop()
+            self.validation_status_success()
             self.page.snack_bar.open = True
             self.page.update()
         else:
