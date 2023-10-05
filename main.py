@@ -96,7 +96,7 @@ class ETHValidator(ft.UserControl):
         )
         super().__init__()
     
-    def expand_validation_box(self, e):
+    def expand_validation_box(self, e: ft.ControlEvent) -> None:
         self.title.opacity = 0
         self.title.offset = ft.transform.Offset(0, -1)
         self.title.update()
@@ -114,7 +114,7 @@ class ETHValidator(ft.UserControl):
         
         self.add_input()
     
-    def add_input(self):
+    def add_input(self) -> None:
         self.validation_box.content = ft.Column(
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -137,14 +137,14 @@ class ETHValidator(ft.UserControl):
         self.eth_address_input.opacity = 1
         self.eth_address_input.update()
     
-    def clear_validation_status(self):
+    def clear_validation_status(self) -> None:
         self.validation_status.opacity = 0
         self.validation_status.offset = ft.transform.Offset(2.5, 0)
         self.validation_status.content.value = False
         self.validation_status.update()
         time.sleep(0.5)
     
-    def validation_status_success(self):
+    def validation_status_success(self) -> None:
         self.validation_status.content = ft.Icon(ft.icons.CHECK_CIRCLE)
         self.validation_status.content.color = ft.colors.TEAL_600
         self.validation_status.opacity = 1
@@ -154,7 +154,7 @@ class ETHValidator(ft.UserControl):
         self.validation_status.content.value = True
         self.validation_status.update()
     
-    def validation_status_failed(self):
+    def validation_status_failed(self) -> None:
         self.validation_status.content = ft.Icon(ft.icons.CIRCLE)
         self.validation_status.content.color = ft.colors.RED
         self.validation_status.update()
@@ -163,7 +163,7 @@ class ETHValidator(ft.UserControl):
         self.validation_status.update()
         time.sleep(0.5)
 
-    def validate_address(self, e):
+    def validate_address(self, e: ft.ControlEvent) -> None:
         eth_address = self.eth_address_input.value
 
         self.clear_validation_status()
@@ -222,7 +222,7 @@ class ETHValidator(ft.UserControl):
         )
 
 
-def main(page: ft.Page):
+def main(page: ft.Page) -> None:
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.padding = 0
